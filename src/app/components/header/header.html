@@ -1,0 +1,26 @@
+<header class="tech-header">
+  <div class="container header-wrapper">
+    <a class="brand" routerLink="/home" aria-label="Ir para TechHub">
+      <span class="logo-icon">⚡</span>TechHub
+    </a>
+
+    <nav class="nav-menu" aria-label="Menu principal">
+      <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="nav-icon">🏠</span> Loja
+      </a>
+
+      @if (authService.isAuthenticated()) {
+        <a routerLink="/perfil" routerLinkActive="active">
+          <span class="nav-icon">👤</span> Perfil
+        </a>
+        <button type="button" class="btn-logout" (click)="logout()">
+          <span class="nav-icon">🚪</span> Sair
+        </button>
+      } @else {
+        <a routerLink="/login" routerLinkActive="active">
+          <span class="nav-icon">🔐</span> Login
+        </a>
+      }
+    </nav>
+  </div>
+</header>

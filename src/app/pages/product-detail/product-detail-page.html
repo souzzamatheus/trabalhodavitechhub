@@ -1,0 +1,56 @@
+<div class="detail-container">
+  <div class="container">
+    <a class="back-link" routerLink="/home" aria-label="Voltar para produtos">
+      ← Voltar para loja
+    </a>
+
+    @if (isLoading) {
+      <div class="loading-state" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Carregando detalhes do produto...</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="error-state">
+        <h3>⚠️ Erro ao carregar produto</h3>
+        <p>{{ errorMessage }}</p>
+        <a class="btn-store" routerLink="/home">Voltar para loja</a>
+      </div>
+    } @else if (product) {
+      <article class="product-detail">
+        <div class="product-gallery">
+          <img [src]="product.image" [alt]="product.title" />
+        </div>
+
+        <div class="product-info">
+          <div class="category-label">{{ product.category | titlecase }}</div>
+          
+          <h1 class="product-name">{{ product.title }}</h1>
+          
+          <div class="rating-box">
+            <span class="rating-stars">⭐ {{ product.rating.rate }}</span>
+            <span class="rating-count">{{ product.rating.count }} avaliações</span>
+          </div>
+
+          <div class="price-box">
+            <span class="price-label">Preço:</span>
+            <span class="price-value">R$ {{ product.price | number:'1.2-2' }}</span>
+          </div>
+
+          <div class="description-box">
+            <h2>Descrição do Produto</h2>
+            <p>{{ product.description }}</p>
+          </div>
+
+          <div class="action-buttons">
+            <button type="button" class="btn-store">
+              🛒 Comprar Agora
+            </button>
+            <a routerLink="/home" class="btn-secondary">
+              Continuar Comprando
+            </a>
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+</div>

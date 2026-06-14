@@ -1,0 +1,80 @@
+<div class="profile-container">
+  <div class="container">
+    <div class="profile-header">
+      <div class="header-content">
+        <h1>👤 Meu Perfil</h1>
+        <p>Informações da sua conta no TechHub</p>
+      </div>
+      <button type="button" class="btn-logout" (click)="logout()">
+        🚪 Sair
+      </button>
+    </div>
+
+    @if (isLoading) {
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>Carregando seus dados...</p>
+      </div>
+    } @else if (errorMessage) {
+      <div class="error-state">
+        <h3>⚠️ Erro ao carregar perfil</h3>
+        <p>{{ errorMessage }}</p>
+        <button class="btn-store" (click)="loadProfile()">Tentar Novamente</button>
+      </div>
+    } @else if (user) {
+      <div class="profile-card">
+        <div class="user-header">
+          <div class="user-avatar">
+            <span class="avatar-text">{{ user.name.firstname.charAt(0) }}{{ user.name.lastname.charAt(0) }}</span>
+          </div>
+          <div class="user-info">
+            <h2 class="user-name">{{ user.name.firstname | titlecase }} {{ user.name.lastname | titlecase }}</h2>
+            <p class="user-username">@{{ user.username }}</p>
+          </div>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <span class="info-label">📧 E-mail</span>
+            <p class="info-value">{{ user.email }}</p>
+          </div>
+          
+          <div class="info-card">
+            <span class="info-label">📱 Telefone</span>
+            <p class="info-value">{{ user.phone }}</p>
+          </div>
+          
+          <div class="info-card">
+            <span class="info-label">🏙️ Cidade</span>
+            <p class="info-value">{{ user.address.city | titlecase }}</p>
+          </div>
+          
+          <div class="info-card">
+            <span class="info-label">🛣️ Rua</span>
+            <p class="info-value">{{ user.address.street | titlecase }}</p>
+          </div>
+          
+          <div class="info-card">
+            <span class="info-label">🔢 Número</span>
+            <p class="info-value">{{ user.address.number }}</p>
+          </div>
+          
+          <div class="info-card">
+            <span class="info-label">📮 CEP</span>
+            <p class="info-value">{{ user.address.zipcode }}</p>
+          </div>
+        </div>
+
+        <div class="full-address">
+          <h3>📍 Endereço Completo</h3>
+          <div class="address-box">
+            <p>
+              {{ user.address.street | titlecase }}, {{ user.address.number }} 
+              <br> {{ user.address.city | titlecase }} - {{ user.address.zipcode }}
+            </p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>

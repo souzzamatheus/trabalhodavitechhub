@@ -1,0 +1,147 @@
+<div class="home-page">
+  <!-- Top Search Bar -->
+  <div class="search-bar">
+    <div class="container">
+      <div class="search-content">
+        <button class="toggle-sidebar" (click)="toggleSidebar()">
+          ☰ Filtros
+        </button>
+        
+        <div class="search-input-wrapper">
+          <input 
+            type="text" 
+            class="search-input"
+            placeholder="🔍 Buscar produtos..."
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+            aria-label="Buscar produtos"
+          />
+        </div>
+
+        <div class="cart-badge">
+          <span class="cart-icon">🛒</span>
+          @if (cartCount > 0) {
+            <span class="badge">{{ cartCount }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content-wrapper">
+    <!-- Sidebar Filters -->
+    <aside class="filters-sidebar" [class.open]="sidebarOpen">
+      <div class="sidebar-header">
+        <h3>Filtros</h3>
+        <button class="close-sidebar" (click)="toggleSidebar()">✕</button>
+      </div>
+
+      <!-- Categories Filter -->
+      <div class="filter-group">
+        <h4>Categorias</h4>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input 
+              type="radio" 
+              name="category"
+              value=""
+              [(ngModel)]="selectedCategory"
+              (change)="onCategoryChange()"
+            />
+            <span>Todas as categorias</span>
+          </label>
+
+          @for (category of categories; track category) {
+            <label class="radio-label">
+              <input 
+                type="radio" 
+                name="category"
+                [value]="category"
+                [(ngModel)]="selectedCategory"
+                (change)="onCategoryChange()"
+              />
+              <span>{{ category | titlecase }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <!-- Sort Filter -->
+      <div class="filter-group">
+        <h4>Ordenar por</h4>
+        <select 
+          [(ngModel)]="sortBy"
+          (change)="onSortChange()"
+          class="sort-select"
+        >
+          <option value="relevance">Relevância</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+          <option value="rating">Melhor avaliação</option>
+        </select>
+      </div>
+
+      <!-- Clear Filters -->
+      <button class="clear-filters-btn" (click)="clearFilters()">
+        🔄 Limpar Filtros
+      </button>
+    </aside>
+
+    <!-- Products Section -->
+    <section class="products-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">
+            @if (selectedCategory) {
+              {{ selectedCategory | titlecase }}
+            } @else {
+              Todos os Produtos
+            }
+          </h2>
+          <p class="products-count">
+            {{ filteredProducts.length }} 
+            {{ filteredProducts.length === 1 ? 'produto encontrado' : 'produtos encontrados' }}
+          </p>
+        </div>
+
+        @if (isLoading) {
+          <div class="products-grid loading" aria-live="polite">
+            @for (item of [1, 2, 3, 4, 5, 6, 7, 8]; track item) {
+              <div class="skeleton-card">
+                <div class="skeleton skeleton-img"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text short"></div>
+                <div class="skeleton skeleton-button"></div>
+              </div>
+            }
+          </div>
+        } @else if (errorMessage) {
+          <div class="error-container">
+            <div class="error-icon">❌</div>
+            <h3>Oops! Algo deu errado</h3>
+            <p>{{ errorMessage }}</p>
+            <button type="button" class="btn-store" (click)="loadProducts()">
+              🔄 Tentar Novamente
+            </button>
+          </div>
+        } @else if (filteredProducts.length === 0) {
+          <div class="empty-state">
+            <div class="empty-icon">🔎</div>
+            <h3>Nenhum produto encontrado</h3>
+            <p>Tente ajustar seus filtros ou fazer uma nova busca</p>
+            <button class="btn-store" (click)="clearFilters()">
+              🔄 Limpar Filtros
+            </button>
+          </div>
+        } @else {
+          <div class="products-grid">
+            @for (product of filteredProducts; track product.id) {
+              <app-product-card [product]="product" />
+            }
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+</div>

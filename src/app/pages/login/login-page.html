@@ -1,0 +1,77 @@
+<div class="login-container">
+  <div class="login-background"></div>
+  
+  <div class="login-wrapper">
+    <div class="login-card">
+      <div class="login-header">
+        <span class="login-icon">🔐</span>
+        <h1>Bem-vindo ao TechHub</h1>
+        <p>Entre na sua conta para acessar</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="submit()" novalidate class="login-form">
+        
+        <div class="info-box">
+          <span class="info-icon">💡</span>
+          <div>
+            <strong>Credenciais de teste:</strong>
+            <p>Usuário: <code>matheus</code> | Senha: <code>12345</code></p>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="username" class="form-label">👤 Usuário</label>
+          <input 
+            type="text" 
+            id="username" 
+            class="form-input"
+            formControlName="username" 
+            placeholder="Digite seu usuário"
+            autocomplete="username"
+          />
+          @if (loginForm.controls.username.touched && loginForm.controls.username.invalid) {
+            <span class="error-message">O usuário é obrigatório</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="password" class="form-label">🔑 Senha</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-input"
+            formControlName="password" 
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+          />
+          @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {
+            <span class="error-message">A senha é obrigatória</span>
+          }
+        </div>
+
+        @if (errorMessage) {
+          <div class="alert-error">
+            <span>⚠️</span>
+            <span>{{ errorMessage }}</span>
+          </div>
+        }
+
+        <button 
+          type="submit" 
+          class="btn-login"
+          [disabled]="isSubmitting"
+        >
+          @if (isSubmitting) {
+            <span class="loader"></span> Entrando...
+          } @else {
+            🚀 Entrar na Conta
+          }
+        </button>
+      </form>
+
+      <div class="login-footer">
+        <p>Não tem conta? <a href="#">Entre em contato com administrador</a></p>
+      </div>
+    </div>
+  </div>
+</div>
